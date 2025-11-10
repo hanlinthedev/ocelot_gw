@@ -1,6 +1,12 @@
 @GW_HostAddress = http://localhost:5227
 
-GET {{GW_HostAddress}}/weatherforecast/
+GET {{GW_HostAddress}}/protected/weatherforecast/
 Accept: application/json
+X-Client-Type: Admin
+
+###
+GET {{GW_HostAddress}}/product/weatherforecast/
+Accept: application/json
+X-Client-Type: User
 
 ###

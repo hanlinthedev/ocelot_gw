@@ -46,9 +46,6 @@ public class CustomHeaderDelegatingHandler : DelegatingHandler
 
       if (!response.Headers.Contains(TraceHeader))
          response.Headers.Add(TraceHeader, traceId);
-
-
-
       return response;
    }
 }
