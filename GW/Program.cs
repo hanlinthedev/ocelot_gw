@@ -17,30 +17,23 @@ builder.Configuration
     .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 
+builder.Services.AddAuthentication()
+    .AddScheme<AuthenticationSchemeOptions, AuthMiddleware>(Auth.ApiKeyScheme, options => { });
+
 builder.Services.AddOcelot(builder.Configuration).AddConsul<ConsulService>().AddConfigStoredInConsul().AddCacheManager(x =>
 {
     x.WithDictionaryHandle();
 }).AddPolly().AddDelegatingHandler<CustomHeaderDelegatingHandler>(true);
 
 
-builder.Services.AddAuthentication()
-    .AddScheme<AuthenticationSchemeOptions, AuthMiddleware>(Auth.ApiKeyScheme, options => { });
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
-
-app.UseOcelot(
-new OcelotPipelineConfiguration
-{
-    AuthorizationMiddleware = async (ctx, next) =>
-    {
-        // Custom authorization logic can be added here
-        await next.Invoke();
-    }
-}
-).Wait();
+app.UseAuthentication();
+app.UseOcelot().Wait();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -2,7 +2,7 @@
 	"Routes": [
 		{
 			"UpstreamHttpMethod": ["Get", "Post"],
-			"UpstreamPathTemplate": "product/{everything}",
+			"UpstreamPathTemplate": "/product/{everything}",
 			"DownstreamPathTemplate": "/{everything}",
 			"DownstreamScheme": "http",
 			"ServiceName": "product",
@@ -10,6 +10,7 @@
 			"AuthenticationOptions": {
 				"AuthenticationProviderKey": "ApiKeyScheme"
 			},
+
 			"RouteClaimsRequirement": {
 				"ClientType": "User"
 			},
@@ -19,7 +20,7 @@
 		},
 		{
 			"UpstreamHttpMethod": ["Get", "Post"],
-			"UpstreamPathTemplate": "protected/{everything}",
+			"UpstreamPathTemplate": "/protected/{everything}",
 			"DownstreamPathTemplate": "/{everything}",
 			"DownstreamScheme": "http",
 			"ServiceName": "protected",

@@ -2,7 +2,7 @@
 
 GET {{GW_HostAddress}}/protected/weatherforecast/
 Accept: application/json
-X-Client-Type: Admin
+X-Client-Type: User
 
 ###
 GET {{GW_HostAddress}}/product/weatherforecast/

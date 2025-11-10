@@ -27,7 +27,7 @@ var ip = Dns.GetHostEntry(hostname)
 var registration = new AgentServiceRegistration()
 {
     ID = $"{app.Environment.ApplicationName}-{Guid.NewGuid()}",
-    Name = "prrotected",
+    Name = "protected",
     Address = ip,
     Port = 5253,
     Tags = new[] { "api" },
