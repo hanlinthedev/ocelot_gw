@@ -1,0 +1,11 @@
+{
+	"GlobalConfiguration": {
+		"ServiceDiscoveryProvider": {
+			"Host": "consul",
+			"Port": 8500,
+			"ConfigurationKey": "services",
+			"Type": "PollConsul",
+			"PollingInterval": 100000
+		}
+	}
+}

@@ -1,0 +1,71 @@
+version: "3.8"
+
+services:
+  consul:
+    image: consul:1.15.4
+    container_name: dev-consul
+    restart: unless-stopped
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    environment:
+      CONSUL_BIND_INTERFACE: eth0
+    volumes:
+      - consuldata:/consul/data
+    command: "consul agent -server -bootstrap-expect=1 -ui -data-dir=/consul/data -client=0.0.0.0"
+    networks:
+      - microservices-net
+
+  gateway:
+    build:
+      context: ./GW
+      dockerfile: Dockerfile
+    container_name: gateway
+    depends_on:
+      - consul
+    ports:
+      - "5227:5227"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5227
+    networks:
+      - microservices-net
+
+  product:
+    build:
+      context: ./product
+      dockerfile: Dockerfile
+    depends_on:
+      - consul
+    deploy:
+      replicas: 3
+    ports:
+      - "5001-5003:5298"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5298
+    networks:
+      - microservices-net
+
+  protected:
+    build:
+      context: ./protected
+      dockerfile: Dockerfile
+    depends_on:
+      - consul
+    deploy:
+      replicas: 3
+    ports:
+      - "5004-5006:5253"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5253
+    networks:
+      - microservices-net
+
+volumes:
+  consuldata:
+
+networks:
+  microservices-net:
+    driver: bridge
